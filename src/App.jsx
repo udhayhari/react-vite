@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { connect } from 'react-redux';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import {
+  incrementCounter
+} from "./redux/actions/counter.action";
 
-function App() {
-  const [count, setCount] = useState(0)
+function App(props) {
 
   return (
     <>
@@ -18,8 +20,8 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={() => props.increaseCounter()}>
+          count is {props.count}
         </button>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
@@ -32,4 +34,16 @@ function App() {
   )
 }
 
-export default App
+const mapStateToProps = state => {
+  return {
+    count: state.counter.count
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    increaseCounter: () => dispatch(incrementCounter())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
